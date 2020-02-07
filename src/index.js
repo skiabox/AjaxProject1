@@ -1,60 +1,28 @@
-// Load Single Customer
-const loadCustomer = e => {
+const loadData = () => {
+  //Create an XHR Object
   const xhr = new XMLHttpRequest();
 
-  xhr.open('GET', 'customer.json', true); //true for asynchronous
+  // OPEN
+  xhr.open('GET', 'data.txt', true); // true is for asynchronous
 
   xhr.onload = function() {
+    //console.log(this); //this refers to xhr object
     if (this.status === 200) {
       //console.log(this.responseText);
-      const customer = JSON.parse(this.responseText);
-
-      const output = `
-        <ul>
-          <li>ID: ${customer.id}</li>
-          <li>Name: ${customer.name}</li>
-          <li>Company: ${customer.company}</li>
-          <li>Phone: ${customer.phone}</li>
-        </ul>
-      `;
-
-      document.getElementById('customer').innerHTML = output;
+      document.getElementById('output').innerHTML = `<h1>${this.responseText}</h1>`;
     }
+  };
+
+  xhr.onerror = function() {
+    console.log('Request error...');
   };
 
   xhr.send();
 };
 
-// Load Customers
-const loadCustomers = e => {
-  const xhr = new XMLHttpRequest();
+document.getElementById('button').addEventListener('click', loadData);
 
-  xhr.open('GET', 'customers.json', true); //true for asynchronous
-
-  xhr.onload = function() {
-    if (this.status === 200) {
-      //console.log(this.responseText);
-      const customers = JSON.parse(this.responseText);
-
-      let output = '';
-
-      customers.forEach(customer => {
-        output += `
-        <ul>
-          <li>ID: ${customer.id}</li>
-          <li>Name: ${customer.name}</li>
-          <li>Company: ${customer.company}</li>
-          <li>Phone: ${customer.phone}</li>
-        </ul>
-      `;
-      });
-
-      document.getElementById('customers').innerHTML = output;
-    }
-  };
-
-  xhr.send();
-};
-
-document.getElementById('button1').addEventListener('click', loadCustomer);
-document.getElementById('button2').addEventListener('click', loadCustomers);
+// HTTP Statuses
+// 200: "OK"
+// 403: "Forbidden"
+// 404: "Not Found"
