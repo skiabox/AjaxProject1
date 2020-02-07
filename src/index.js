@@ -1,28 +1,60 @@
-const loadData = () => {
-  //Create an XHR Object
+// Load Single Customer
+const loadCustomer = e => {
   const xhr = new XMLHttpRequest();
 
-  // OPEN
-  xhr.open('GET', 'data.txt', true); // true is for asynchronous
+  xhr.open('GET', 'customer.json', true); //true for asynchronous
 
   xhr.onload = function() {
-    //console.log(this); //this refers to xhr object
     if (this.status === 200) {
       //console.log(this.responseText);
-      document.getElementById('output').innerHTML = `<h1>${this.responseText}</h1>`;
-    }
-  };
+      const customer = JSON.parse(this.responseText);
 
-  xhr.onerror = function() {
-    console.log('Request error...');
+      const output = `
+        <ul>
+          <li>ID: ${customer.id}</li>
+          <li>Name: ${customer.name}</li>
+          <li>Company: ${customer.company}</li>
+          <li>Phone: ${customer.phone}</li>
+        </ul>
+      `;
+
+      document.getElementById('customer').innerHTML = output;
+    }
   };
 
   xhr.send();
 };
 
-document.getElementById('button').addEventListener('click', loadData);
+// Load Customers
+const loadCustomers = e => {
+  const xhr = new XMLHttpRequest();
 
-// HTTP Statuses
-// 200: "OK"
-// 403: "Forbidden"
-// 404: "Not Found"
+  xhr.open('GET', 'customers.json', true); //true for asynchronous
+
+  xhr.onload = function() {
+    if (this.status === 200) {
+      //console.log(this.responseText);
+      const customers = JSON.parse(this.responseText);
+
+      let output = '';
+
+      customers.forEach(customer => {
+        output += `
+        <ul>
+          <li>ID: ${customer.id}</li>
+          <li>Name: ${customer.name}</li>
+          <li>Company: ${customer.company}</li>
+          <li>Phone: ${customer.phone}</li>
+        </ul>
+      `;
+      });
+
+      document.getElementById('customers').innerHTML = output;
+    }
+  };
+
+  xhr.send();
+};
+
+document.getElementById('button1').addEventListener('click', loadCustomer);
+document.getElementById('button2').addEventListener('click', loadCustomers);
